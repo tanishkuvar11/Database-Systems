@@ -244,3 +244,90 @@ WHERE NOT EXISTS(
 
  	);
 
+
+
+**15. Find all courses that were offered at most once in 2009.**
+
+SELECT course\_id
+
+FROM section
+
+WHERE year = 2009
+
+GROUP BY course\_id
+
+HAVING COUNT(\*) <= 1;
+
+
+
+**16. Find all the students who have opted at least two courses offered by CSE department**
+
+SELECT s.id, s.name
+
+FROM student s
+
+JOIN takes t ON s.id = t.id
+
+JOIN course c ON t.course\_id = c.course\_id
+
+WHERE c.dept\_name = 'Comp. Sci.'
+
+GROUP BY s.id, s.name
+
+HAVING COUNT(DISTINCT t.course\_id) >= 2;
+
+
+
+**17. Find the average instructors salary of those departments where the average salary is greater than 42000**
+
+SELECT dept\_name, avg\_salary
+
+FROM (
+
+ 	SELECT dept\_name, AVG(salary) AS avg\_salary
+
+ 	FROM instructor
+
+ 	GROUP BY dept\_name)
+
+WHERE avg\_salary > 42000;
+
+
+
+**18. Create a view all\_courses consisting of course sections offered by Physics department in the Fall 2009, with the building and room number of each section.**
+
+CREATE VIEW all\_courses AS
+
+SELECT s.course\_id, s.sec\_id, s.building, s.room\_number
+
+FROM section s
+
+JOIN course c ON s.course\_id = c.course\_id
+
+WHERE c.dept\_name = 'Physics'
+
+AND s.semester = 'Fall'
+
+AND s.year = 2009;
+
+
+
+
+
+**19. Select all the courses from all\_courses view.**
+
+SELECT \* FROM all\_courses;
+
+
+
+**20. Create a view department\_total\_salary consisting of department name and total salary of that department.**
+
+CREATE VIEW department\_total\_salary AS
+
+SELECT dept\_name, SUM(salary) AS total\_salary
+
+FROM instructor
+
+GROUP BY dept\_name;
+
+
