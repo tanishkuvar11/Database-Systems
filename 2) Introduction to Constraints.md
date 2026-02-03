@@ -160,3 +160,172 @@ JOIN course ON takes.course\_id=course.course\_id
 
 WHERE takes.ID = '12345';
 
+
+
+**13. List all the instructors whose salary is in between 40000 and 90000.**
+
+SELECT name, salary
+
+FROM instructor
+
+WHERE salary BETWEEN 40000 AND 90000;
+
+
+
+**14. Display the IDs of all instructors who have never taught a course.**
+
+SELECT ID
+
+FROM instructor
+
+MINUS
+
+SELECT ID
+
+FROM teaches;
+
+
+
+**15. Find the student names, course names, and the year, for all students those who have attended classes in room-number 303.**
+
+SELECT s.name, c.title, sec.year
+
+FROM student s, takes t, section sec, course c
+
+WHERE s.ID = t.ID
+
+AND t.course\_id = sec.course\_id
+
+AND t.sec\_id = sec.sec\_id
+
+AND t.semester = sec.semester
+
+AND t.year = sec.year
+
+AND sec.course\_id = c.course\_id
+
+AND sec.room\_number = 303;
+
+
+
+**16. For all students who have opted courses in 2015, find their names and course id’s with the attribute course title replaced by c-name**
+
+SELECT s.name, t.course\_id, c.title AS c\_name
+
+FROM student s, takes t, course c
+
+WHERE s.ID = t.ID
+
+AND t.course\_id = c.course\_id
+
+AND t.year = 2009;
+
+
+
+**17. Find the names of all instructors whose salary is greater than the salary of at least one instructor of CSE department and salary replaced by inst-salary.**
+
+SELECT name, salary AS inst\_salary
+
+FROM instructor
+
+WHERE salary > (
+
+ 	SELECT MIN(salary)
+
+ 	FROM instructor
+
+ 	WHERE dept\\\_name = 'CSE');
+
+
+
+**18. Find the names of all instructors whose department name includes the substring ‘ch’**
+
+SELECT name, dept\_name
+
+FROM instructor
+
+WHERE dept\_name LIKE '%ch%';
+
+
+
+**19. List the student names along with the length of the student names.**
+
+SELECT name, LENGTH(name) AS name\_length
+
+FROM student;
+
+
+
+**20. List the department names and 3 characters from 3rd position of each department name**
+
+SELECT dept\_name, SUBSTR(dept\_name, 3, 3) AS sub
+
+FROM department;
+
+
+
+**21. List the instructor names in upper case**
+
+SELECT UPPER(name) AS instructor\_name
+
+FROM instructor;
+
+
+
+**22. Replace NULL with value1(say 0) for a column in any of the table**
+
+SELECT ID, course\_id, NVL(grade, 0) AS grade\_final
+
+FROM takes;
+
+
+
+**23. Display the salary and salary/3 rounded to nearest hundred from Instructor**
+
+SELECT salary, ROUND(salary/3, -2) AS salary\_final
+
+FROM instructor;
+
+
+
+**24. Display the birth date of all the employees in the following format:**
+
+** ‘DD-MON-YYYY’**
+
+** ‘DD-MON-YY’**
+
+** ‘DD-MM-YY’**
+
+UPDATE Employee SET dob = DATE '2003-04-12' WHERE EmpNo = 1;
+
+UPDATE Employee SET dob = DATE '2002-08-25' WHERE EmpNo = 2;
+
+UPDATE Employee SET dob = DATE '2001-01-05' WHERE EmpNo = 3;
+
+SELECT TO\_CHAR(dob,'DD-MON-YYYY') AS f1,
+
+TO\_CHAR(dob,'DD-MON-YY') AS f2,
+
+TO\_CHAR(dob,'DD-MM-YY') AS f3
+
+FROM Employee;
+
+
+
+**25. List the employee names and the year (fully spelled out) in which they are born**
+
+** ‘YEAR’**
+
+** ‘Year’**
+
+** ‘year'**
+
+SELECT EmpName,
+
+TO\_CHAR(dob,'YEAR') AS Y1,
+
+TO\_CHAR(dob,'Year') AS Y2,
+
+TO\_CHAR(dob,'year') AS Y3
+
+FROM Employee;
